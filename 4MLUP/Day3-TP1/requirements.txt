@@ -1,0 +1,4 @@
+colorama~=0.4.4
+pandas~=1.4.2
+mlsp~=0.1
+scikit-learn~=1.0.2
