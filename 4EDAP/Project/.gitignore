@@ -1,0 +1,3 @@
+# Temp files
+.temp/
+!.temp/.keep
