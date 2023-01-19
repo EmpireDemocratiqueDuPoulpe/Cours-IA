@@ -3,8 +3,8 @@
 
 ## Requirements
 - Python ~3.10
-- Packages in [requirements.txt](https://github.com/EmpireDemocratiqueDuPoulpe/4MLSP-Day4-TP1/blob/main/requirements.txt)
-- [4MLSP-Module](https://github.com/EmpireDemocratiqueDuPoulpe/4MLSP-Module)
+- Packages in [requirements.txt](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/blob/main/4MLSP/Day4-TP1/requirements.txt)
+- [4MLSP-Module](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/4MLSP/4MLSP-Module)
 
 ## Navigation
-[<-- Previous exercise](https://github.com/EmpireDemocratiqueDuPoulpe/4MLSP-Day3-TP1/tree/main) | [Next exercise -->](https://github.com/EmpireDemocratiqueDuPoulpe/4MLSP-Day5-TP1/tree/main)
+[<-- Previous exercise](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/4MLSP/Day3-TP1) | [Next exercise -->](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/4MLSP/Day5-TP1)
