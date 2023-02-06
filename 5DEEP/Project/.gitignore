@@ -1,3 +1,7 @@
 # Data
 data/*
 !data/.keep
+
+# Temp folder
+temp/
+!temp/.keep
