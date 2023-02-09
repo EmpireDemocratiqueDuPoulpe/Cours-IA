@@ -177,8 +177,7 @@ def main() -> None:
     print(f"Top N for each user (n=10, min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{top_n}")
     print(f"Hit rate: {Fore.WHITE}{Style.BRIGHT}{get_hit_rate(top_n=top_n, left_out_predictions=predictions_random) * 100}%")
     print(f"Cumulative hit rate (min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_cumulative_hit_rate(top_n=top_n, left_out_predictions=predictions_random, min_rating=4.0) * 100}%")
-    print(f"Average reciprocal hit rate: {Fore.WHITE}{Style.BRIGHT}{get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions_random) * 100}%")
-    print(f"Average reciprocal hit rate: {Fore.WHITE}{Style.BRIGHT}{get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions_random) * 100}%")
+    print(f"Average reciprocal hit rate: {Fore.WHITE}{Style.BRIGHT}{get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions_random)}")
     print(f"User coverage (users_count=50, min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_user_coverage(top_n=top_n, users_count=50, min_rating=4.0) * 100}%")
 
     print(f"\n---- Basic model performance")
@@ -186,8 +185,7 @@ def main() -> None:
     print(f"Top N for each user (n=10, min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{top_n}")
     print(f"Hit rate: {Fore.WHITE}{Style.BRIGHT}{get_hit_rate(top_n=top_n, left_out_predictions=predictions_basic) * 100}%")
     print(f"Cumulative hit rate (min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_cumulative_hit_rate(top_n=top_n, left_out_predictions=predictions_basic, min_rating=4.0) * 100}%")
-    print(f"Average reciprocal hit rate: {Fore.WHITE}{Style.BRIGHT}{get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions_basic) * 100}%")
-    print(f"Average reciprocal hit rate: {Fore.WHITE}{Style.BRIGHT}{get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions_basic) * 100}%")
+    print(f"Average reciprocal hit rate: {Fore.WHITE}{Style.BRIGHT}{get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions_basic)}")
     print(f"User coverage (users_count=50, min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_user_coverage(top_n=top_n, users_count=50, min_rating=4.0) * 100}%")
 
 
