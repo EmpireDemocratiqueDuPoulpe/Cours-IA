@@ -20,21 +20,21 @@ def map_predictions(predictions: list) -> defaultdict[str, list]:
     return user_to_predictions
 
 
-def get_top_n(predictions: list, n: int = 5, min_rating: float = 4.0) -> dict[str, list]:
+def get_top_n(predictions: list, n: int = 5, min_rating: float = 0.0) -> dict[str, list]:
     """ Return the top-N recommendation for each user """
     # Map the predictions to each user
     top_n = map_predictions(predictions)
 
     # Compute the top N of each user
     for user_id, user_ratings in top_n.items():
-        # Filter the rating below the threshold
-        user_ratings_filtered = list(filter(lambda x: x[1] >= min_rating, user_ratings))
-
         # Sort the user ratings by the estimated value
-        user_ratings_filtered.sort(key=(lambda x: x[1]), reverse=True)
+        user_ratings.sort(key=(lambda x: x[1]), reverse=True)
 
-        # Update the top n
-        top_n[user_id] = user_ratings_filtered[:n]
+        # Cut down the top
+        top_n[user_id] = user_ratings[:n]
+
+        # Filter the ratings below the threshold
+        top_n[user_id] = list(filter(lambda x: x[1] >= min_rating, user_ratings))
 
     return dict(top_n)
 
@@ -50,6 +50,7 @@ def get_hit_rate(top_n: dict[str, list], left_out_predictions: list) -> float:
         for top_item_id, _, _ in top_n[user_id]:
             if top_item_id == item_id:
                 hit = True
+                break
 
         # Add the rating
         total += 1
@@ -71,6 +72,7 @@ def get_cumulative_hit_rate(top_n: dict[str, list], left_out_predictions: list, 
             for top_item_id, _, _ in top_n[user_id]:
                 if top_item_id == item_id:
                     hit = True
+                    break
 
             # Add the rating
             total += 1
@@ -178,7 +180,7 @@ def main() -> None:
     print(f"Hit rate: {Fore.WHITE}{Style.BRIGHT}{get_hit_rate(top_n=top_n, left_out_predictions=predictions_random) * 100}%")
     print(f"Cumulative hit rate (min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_cumulative_hit_rate(top_n=top_n, left_out_predictions=predictions_random, min_rating=4.0) * 100}%")
     print(f"Average reciprocal hit rate: {Fore.WHITE}{Style.BRIGHT}{get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions_random)}")
-    print(f"User coverage (users_count=50, min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_user_coverage(top_n=top_n, users_count=50, min_rating=4.0) * 100}%")
+    print(f"User coverage (users_count=50, min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_user_coverage(top_n=top_n, users_count=50, min_rating=4.0)}")
 
     print(f"\n---- Basic model performance")
     top_n = get_top_n(predictions=predictions_basic, n=10, min_rating=4.0)
@@ -186,7 +188,7 @@ def main() -> None:
     print(f"Hit rate: {Fore.WHITE}{Style.BRIGHT}{get_hit_rate(top_n=top_n, left_out_predictions=predictions_basic) * 100}%")
     print(f"Cumulative hit rate (min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_cumulative_hit_rate(top_n=top_n, left_out_predictions=predictions_basic, min_rating=4.0) * 100}%")
     print(f"Average reciprocal hit rate: {Fore.WHITE}{Style.BRIGHT}{get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions_basic)}")
-    print(f"User coverage (users_count=50, min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_user_coverage(top_n=top_n, users_count=50, min_rating=4.0) * 100}%")
+    print(f"User coverage (users_count=50, min_rating=4.0): {Fore.WHITE}{Style.BRIGHT}{get_user_coverage(top_n=top_n, users_count=50, min_rating=4.0)}")
 
 
 if __name__ == "__main__":
