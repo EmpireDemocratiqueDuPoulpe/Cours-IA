@@ -137,10 +137,10 @@ def main() -> None:
     print("Model initialization...")
     data_iterator = surprise.model_selection.KFold(n_splits=5, random_state=RANDOM_STATE, shuffle=True)  # Initialize the data iterator
     param_grid = {
-        "k": [20, 40, 60],
-        "min_k": [1, 3],
+        "k": [10, 15, 20, 40],
+        "min_k": [1, 2, 3, 5],
         "sim_options": {
-            "name": ["msd", "pearson"],
+            "name": ["cosine", "msd", "pearson", "pearson_baseline"],
             "user_based": [True]
         }
     }
@@ -182,10 +182,10 @@ def main() -> None:
     print("Model initialization...")
     data_iterator = surprise.model_selection.KFold(n_splits=5, random_state=RANDOM_STATE, shuffle=True)  # Initialize the data iterator
     param_grid = {
-        "k": [20, 40, 60],
-        "min_k": [1, 3],
+        "k": [10, 15, 20, 40],
+        "min_k": [1, 2, 3, 5],
         "sim_options": {
-            "name": ["msd", "pearson"],
+            "name": ["cosine", "msd", "pearson", "pearson_baseline"],
             "user_based": [False]
         }
     }
@@ -213,6 +213,94 @@ def main() -> None:
     data_train, data_test = surprise.model_selection.train_test_split(data, test_size=0.2, random_state=RANDOM_STATE)  # Split the dataset
     model_item_based.fit(data_train)
     predictions = model_item_based.test(data_test)
+    print(f"{Style.RESET_ALL}")
+
+    top_n = get_top_n(predictions=predictions, n=10, min_rating=2.5)
+    print(f"Built top N for each user (n=10, min_rating=2.5)")
+    print(f"{Style.BRIGHT}Hit rate:{Style.NORMAL} {get_hit_rate(top_n=top_n, left_out_predictions=predictions) * 100}%")
+    print(f"{Style.BRIGHT}Cumulative hit rate (min_rating=2.5):{Style.NORMAL} {get_cumulative_hit_rate(top_n=top_n, left_out_predictions=predictions, min_rating=2.5) * 100}%")
+    print(f"{Style.BRIGHT}Average reciprocal hit rate:{Style.NORMAL} {get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions)}")
+    print(f"{Style.BRIGHT}User coverage (users_count=50, min_rating=2.5):{Style.NORMAL} {get_user_coverage(top_n=top_n, users_count=50, min_rating=2.5)}")
+
+    # Q3 - Matrix Factorization without implicit ratings
+    print(f"{Fore.GREEN}{Style.BRIGHT} #### Q3 - Matrix Factorization without implicit ratings #######################{Style.RESET_ALL}")
+    print("Model initialization...")
+    data_iterator = surprise.model_selection.KFold(n_splits=5, random_state=RANDOM_STATE, shuffle=True)  # Initialize the data iterator
+    param_grid = {
+        "n_factors": [50, 100, 150],
+        "n_epochs": [10, 20, 30],
+        "biased": [True, False],
+        "lr_all": [0.002, 0.005, 0.01],
+        "reg_all": [0.02, 0.04]
+    }
+
+    print(f"Running GridSearchCV...{Fore.WHITE}{Style.DIM}")
+    grid_search = surprise.model_selection.GridSearchCV(surprise.SVD, param_grid=param_grid, measures=["rmse", "mae"], cv=data_iterator, n_jobs=1)
+    grid_search.fit(data)  # Train the model
+
+    # Accuracy print
+    print(f"{Style.RESET_ALL}")
+    print(f"{Style.BRIGHT}RMSE:{Style.NORMAL} {round(grid_search.best_score['rmse'], 4)}")
+    print(f"{Style.BRIGHT}MAE:{Style.NORMAL} {round(grid_search.best_score['mae'], 4)}")
+    print(f"{Style.BRIGHT}Best params:{Style.NORMAL} {grid_search.best_params}")
+    accuracy_df = pandas.DataFrame.from_dict(grid_search.cv_results)
+    print(accuracy_df)
+
+    # Cross validation
+    print(f"Running the cross validation on the best model...{Fore.WHITE}{Style.DIM}")
+    model_user_based = grid_search.best_estimator["rmse"]
+    surprise.model_selection.cross_validate(model_user_based, data, measures=["rmse", "mae"], cv=data_iterator, n_jobs=1, verbose=True)
+    print(f"{Style.RESET_ALL}")
+
+    # Metrics
+    print(f"Calculating model metrics...{Fore.WHITE}{Style.DIM}")
+    data_train, data_test = surprise.model_selection.train_test_split(data, test_size=0.2, random_state=RANDOM_STATE)  # Split the dataset
+    model_user_based.fit(data_train)
+    predictions = model_user_based.test(data_test)
+    print(f"{Style.RESET_ALL}")
+
+    top_n = get_top_n(predictions=predictions, n=10, min_rating=2.5)
+    print(f"Built top N for each user (n=10, min_rating=2.5)")
+    print(f"{Style.BRIGHT}Hit rate:{Style.NORMAL} {get_hit_rate(top_n=top_n, left_out_predictions=predictions) * 100}%")
+    print(f"{Style.BRIGHT}Cumulative hit rate (min_rating=2.5):{Style.NORMAL} {get_cumulative_hit_rate(top_n=top_n, left_out_predictions=predictions, min_rating=2.5) * 100}%")
+    print(f"{Style.BRIGHT}Average reciprocal hit rate:{Style.NORMAL} {get_average_reciprocal_hit_rate(top_n=top_n, left_out_predictions=predictions)}")
+    print(f"{Style.BRIGHT}User coverage (users_count=50, min_rating=2.5):{Style.NORMAL} {get_user_coverage(top_n=top_n, users_count=50, min_rating=2.5)}")
+
+    # Q4 - Matrix Factorization with implicit ratings
+    print(f"{Fore.GREEN}{Style.BRIGHT} #### Q4 - Matrix Factorization with implicit ratings ##########################{Style.RESET_ALL}")
+    print("Model initialization...")
+    data_iterator = surprise.model_selection.KFold(n_splits=5, random_state=RANDOM_STATE, shuffle=True)  # Initialize the data iterator
+    param_grid = {
+        "n_factors": [10, 20, 30],
+        "n_epochs": [10, 20, 30],
+        "cache_ratings": [False],
+        "lr_all": [0.003, 0.007, 0.0125],
+        "reg_all": [0.02, 0.04]
+    }
+
+    print(f"Running GridSearchCV...{Fore.WHITE}{Style.DIM}")
+    grid_search = surprise.model_selection.GridSearchCV(surprise.SVDpp, param_grid=param_grid, measures=["rmse", "mae"], cv=data_iterator, n_jobs=1)
+    grid_search.fit(data)  # Train the model
+
+    # Accuracy print
+    print(f"{Style.RESET_ALL}")
+    print(f"{Style.BRIGHT}RMSE:{Style.NORMAL} {round(grid_search.best_score['rmse'], 4)}")
+    print(f"{Style.BRIGHT}MAE:{Style.NORMAL} {round(grid_search.best_score['mae'], 4)}")
+    print(f"{Style.BRIGHT}Best params:{Style.NORMAL} {grid_search.best_params}")
+    accuracy_df = pandas.DataFrame.from_dict(grid_search.cv_results)
+    print(accuracy_df)
+
+    # Cross validation
+    print(f"Running the cross validation on the best model...{Fore.WHITE}{Style.DIM}")
+    model_user_based = grid_search.best_estimator["rmse"]
+    surprise.model_selection.cross_validate(model_user_based, data, measures=["rmse", "mae"], cv=data_iterator, n_jobs=1, verbose=True)
+    print(f"{Style.RESET_ALL}")
+
+    # Metrics
+    print(f"Calculating model metrics...{Fore.WHITE}{Style.DIM}")
+    data_train, data_test = surprise.model_selection.train_test_split(data, test_size=0.2, random_state=RANDOM_STATE)  # Split the dataset
+    model_user_based.fit(data_train)
+    predictions = model_user_based.test(data_test)
     print(f"{Style.RESET_ALL}")
 
     top_n = get_top_n(predictions=predictions, n=10, min_rating=2.5)
