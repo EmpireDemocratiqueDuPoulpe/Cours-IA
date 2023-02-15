@@ -13,6 +13,7 @@ asttokens=2.0.5=pyhd3eb1b0_0
 astunparse=1.6.3=pypi_0
 atk-1.0=2.36.0=ha1a6a79_0
 attrs=22.1.0=py310h06a4308_0
+audiomentations=0.28.0=pypi_0
 audioread=3.0.0=py310hff52083_1
 backcall=0.2.0=pyhd3eb1b0_0
 beautifulsoup4=4.11.1=py310h06a4308_0
