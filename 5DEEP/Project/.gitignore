@@ -5,6 +5,7 @@ data/*
 # Models folder
 models/
 !models/.keep
+!models/histories/.keep
 
 # Temp folder
 temp/

@@ -25,7 +25,7 @@ def print_model_metrics(model: keras.Model, x_train: numpy.ndarray, y_train: num
     train_loss, train_acc = model.evaluate(x=x_train, y=y_train, verbose=0)
     test_loss, test_acc = model.evaluate(x=x_test, y=y_test, verbose=0)
 
-    print(f"{Style.BRIGHT}Model metrics:{Style.RESET_ALL}")
+    print(f"{Style.BRIGHT}Model metrics ({model.name}):{Style.RESET_ALL}")
     print(f"{Style.BRIGHT}Training >{Style.RESET_ALL} loss={train_loss:.3f} | accuracy={(train_acc * 100):.3f}")
     print(f"{Style.BRIGHT}Testing >{Style.RESET_ALL} loss={test_loss:.3f} | accuracy={(test_acc * 100):.3f}")
 
@@ -36,6 +36,7 @@ def print_classification_report(model: keras.Model, x_test: numpy.ndarray, y_tes
     y_pred_labels = numpy.argmax(y_pred_one_hot, axis=1)  # ... to label encoding
     y_test_labels = numpy.argmax(y_test, axis=1)  # Same for the true labels
 
+    print(f"{Style.BRIGHT}Classification report ({model.name}):{Style.RESET_ALL}")
     print(sklearn.metrics.classification_report(
         y_true=y_test_labels,
         y_pred=y_pred_labels,
@@ -44,7 +45,7 @@ def print_classification_report(model: keras.Model, x_test: numpy.ndarray, y_tes
 
 
 # ### Graphs ###########################################################################################################
-def plot_loss_curve(history: dict) -> None:
+def plot_loss_curve(history: dict, model_name: str = None) -> None:
     """ Plot the training loss and the validation loss curves. """
     # Get the minimum loss value
     min_loss = min(history["loss"])
@@ -60,7 +61,7 @@ def plot_loss_curve(history: dict) -> None:
     min_loss_point, = pyplot.plot(min_loss_epoch, min_loss, marker="o", markersize=4)  # Plot a point at the minimum loss value
     min_val_loss_point, = pyplot.plot(min_val_loss_epoch, min_val_loss, marker="o", markersize=4)  # Plot a point at the minimum validation loss value
 
-    pyplot.title("Loss per epochs")
+    pyplot.title(f"Loss per epochs{f' ({model_name})' if model_name else ''}")
     pyplot.xticks(numpy.arange(start=0, stop=len(history["loss"]), step=5), rotation=90)
     pyplot.xlabel("Epoch")
     pyplot.ylabel("Loss")
@@ -71,7 +72,7 @@ def plot_loss_curve(history: dict) -> None:
     pyplot.show()
 
 
-def plot_accuracy_curve(history: dict) -> None:
+def plot_accuracy_curve(history: dict, model_name: str = None) -> None:
     """ Plot the training accuracy and the validation accuracy curves. """
     # Get the maximum accuracy value
     max_acc = max(history["accuracy"])
@@ -87,7 +88,7 @@ def plot_accuracy_curve(history: dict) -> None:
     max_acc_point, = pyplot.plot(max_acc_epoch, max_acc, marker="o", markersize=4)  # Plot a point at the maximum accuracy value
     max_val_acc_point, = pyplot.plot(max_val_acc_epoch, max_val_acc, marker="o", markersize=4)  # Plot a point at the maximum validation accuracy value
 
-    pyplot.title("Accuracy per epochs")
+    pyplot.title(f"Accuracy per epochs{f' ({model_name})' if model_name else ''}")
     pyplot.xticks(numpy.arange(start=0, stop=len(history["accuracy"]), step=5), rotation=90)
     pyplot.xlabel("Epoch")
     pyplot.ylabel("Accuracy")
@@ -110,6 +111,7 @@ def plot_confusion_matrix(model: keras.Model, x_test: numpy.ndarray, y_test: num
     matrix_plot.plot(cmap="plasma")
     pyplot.xticks(rotation=90)
     pyplot.grid(visible=False)
+    pyplot.title(f"Confusion matrix ({model.name})")
     pyplot.show()
 
     # Print the performance per class
