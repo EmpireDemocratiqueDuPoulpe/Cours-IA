@@ -1,0 +1,13 @@
+# Data
+data/*
+!data/.keep
+!data/Added sounds/*
+
+# Models folder
+models/
+!models/.keep
+!models/histories/.keep
+
+# Temp folder
+temp/
+!temp/.keep
