@@ -1,0 +1,67 @@
+{
+  "evaluation_parameters": {},
+  "meta": {
+    "active_batch_definition": {
+      "batch_identifiers": {
+        "month": "02"
+      },
+      "data_asset_name": "taxi_trips_2022",
+      "data_connector_name": "parquet_data_connector",
+      "datasource_name": "taxi_trips"
+    },
+    "batch_markers": {
+      "ge_load_time": "20230309T143831.392340Z",
+      "pandas_data_fingerprint": "570900d9f69682fb353ed96ea9539870"
+    },
+    "batch_spec": {
+      "path": "/app/tp2/great_expectations/../data/taxi-trips-2022-02.parquet",
+      "reader_method": "read_parquet",
+      "reader_options": {}
+    },
+    "checkpoint_id": null,
+    "checkpoint_name": "taxi-trips-checkpoint",
+    "expectation_suite_name": "taxi-trips-expectations",
+    "great_expectations_version": "0.15.50",
+    "run_id": {
+      "run_name": "20230309-143831-my-run-name-template",
+      "run_time": "2023-03-09T14:38:31.384177+00:00"
+    },
+    "validation_id": null,
+    "validation_time": "20230309T143837.741867Z"
+  },
+  "results": [
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_min_to_be_between",
+        "kwargs": {
+          "batch_id": "da953f972937f5d7391b694c2b8cfefa",
+          "column": "base_passenger_fare",
+          "min_value": 0
+        },
+        "meta": {
+          "notes": {
+            "content": "Target variable should not be negative as drivers should be paid a positive amount.",
+            "format": "markdown"
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "observed_value": -179.9
+      },
+      "success": false
+    }
+  ],
+  "statistics": {
+    "evaluated_expectations": 1,
+    "success_percent": 0.0,
+    "successful_expectations": 0,
+    "unsuccessful_expectations": 1
+  },
+  "success": false
+}

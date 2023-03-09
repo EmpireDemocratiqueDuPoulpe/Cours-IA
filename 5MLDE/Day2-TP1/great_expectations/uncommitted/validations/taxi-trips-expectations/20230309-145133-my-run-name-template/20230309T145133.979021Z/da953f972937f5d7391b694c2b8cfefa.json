@@ -1,0 +1,183 @@
+{
+  "evaluation_parameters": {},
+  "meta": {
+    "active_batch_definition": {
+      "batch_identifiers": {
+        "month": "02"
+      },
+      "data_asset_name": "taxi_trips_2022",
+      "data_connector_name": "parquet_data_connector",
+      "datasource_name": "taxi_trips"
+    },
+    "batch_markers": {
+      "ge_load_time": "20230309T145133.989813Z",
+      "pandas_data_fingerprint": "570900d9f69682fb353ed96ea9539870"
+    },
+    "batch_spec": {
+      "path": "/app/tp2/great_expectations/../data/taxi-trips-2022-02.parquet",
+      "reader_method": "read_parquet",
+      "reader_options": {}
+    },
+    "checkpoint_id": null,
+    "checkpoint_name": "taxi-trips-checkpoint",
+    "expectation_suite_name": "taxi-trips-expectations",
+    "great_expectations_version": "0.15.50",
+    "run_id": {
+      "run_name": "20230309-145133-my-run-name-template",
+      "run_time": "2023-03-09T14:51:33.979021+00:00"
+    },
+    "validation_id": null,
+    "validation_time": "20230309T145140.408764Z"
+  },
+  "results": [
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_min_to_be_between",
+        "kwargs": {
+          "batch_id": "da953f972937f5d7391b694c2b8cfefa",
+          "column": "base_passenger_fare",
+          "min_value": 0
+        },
+        "meta": {
+          "notes": {
+            "content": "Target variable should not be negative as drivers should be paid a positive amount.",
+            "format": "markdown"
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "observed_value": -179.9
+      },
+      "success": false
+    },
+    {
+      "exception_info": {
+        "exception_message": null,
+        "exception_traceback": null,
+        "raised_exception": false
+      },
+      "expectation_config": {
+        "expectation_type": "expect_column_values_to_be_between",
+        "kwargs": {
+          "batch_id": "da953f972937f5d7391b694c2b8cfefa",
+          "column": "driver_pay",
+          "min_value": 0
+        },
+        "meta": {
+          "notes": {
+            "content": "Target variable should not be negative as drivers should be paid a positive amount.",
+            "format": "markdown"
+          }
+        }
+      },
+      "meta": {},
+      "result": {
+        "element_count": 4004821,
+        "missing_count": 0,
+        "missing_percent": 0.0,
+        "partial_unexpected_counts": [
+          {
+            "count": 1,
+            "value": -74.59
+          },
+          {
+            "count": 1,
+            "value": -55.47
+          },
+          {
+            "count": 1,
+            "value": -48.95
+          },
+          {
+            "count": 1,
+            "value": -43.2
+          },
+          {
+            "count": 1,
+            "value": -17.14
+          },
+          {
+            "count": 1,
+            "value": -13.99
+          },
+          {
+            "count": 1,
+            "value": -13.91
+          },
+          {
+            "count": 1,
+            "value": -6.82
+          },
+          {
+            "count": 1,
+            "value": -2.52
+          },
+          {
+            "count": 1,
+            "value": -0.95
+          },
+          {
+            "count": 1,
+            "value": -0.86
+          },
+          {
+            "count": 1,
+            "value": -0.48
+          },
+          {
+            "count": 1,
+            "value": -0.32
+          }
+        ],
+        "partial_unexpected_index_list": [
+          4710563,
+          775111,
+          13217835,
+          760177,
+          765701,
+          2476776,
+          2792511,
+          1000996,
+          760200,
+          812815,
+          2000511,
+          773970,
+          14236325
+        ],
+        "partial_unexpected_list": [
+          -13.91,
+          -0.86,
+          -48.95,
+          -0.95,
+          -0.48,
+          -17.14,
+          -74.59,
+          -55.47,
+          -0.32,
+          -2.52,
+          -43.2,
+          -6.82,
+          -13.99
+        ],
+        "unexpected_count": 13,
+        "unexpected_percent": 0.0003246087652856395,
+        "unexpected_percent_nonmissing": 0.0003246087652856395,
+        "unexpected_percent_total": 0.0003246087652856395
+      },
+      "success": false
+    }
+  ],
+  "statistics": {
+    "evaluated_expectations": 2,
+    "success_percent": 0.0,
+    "successful_expectations": 0,
+    "unsuccessful_expectations": 2
+  },
+  "success": false
+}
