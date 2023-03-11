@@ -20,6 +20,7 @@ def map_predictions(predictions: list) -> defaultdict[int, list[list[int, float,
 
     return user_to_predictions
 
+
 def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: bool = False) -> defaultdict[int, list[list[int, float, float]]]:
     """ Returns the top-N recommendation for each user. """
     top_n = map_predictions(predictions)
@@ -63,7 +64,7 @@ def get_hit_rate(top_n: dict[int, list], left_out_predictions: list, auto_print:
 
     # Print to console
     if auto_print:
-        print(f"{Style.BRIGHT}Hit rate:{Style.NORMAL} {(hit_rate * 100):.4f}%")
+        print(f"{Style.BRIGHT}Hit rate:{Style.NORMAL} {(hit_rate * 100):.6f}%")
 
     return hit_rate
 
@@ -91,7 +92,7 @@ def get_rating_hit_rate(top_n: dict[int, list], left_out_predictions: list, auto
         hit_rate[rating] = hits[rating] / total[rating]
 
         if auto_print:
-            print(f"{rating}\t{(hit_rate[rating] * 100):.4f}%")
+            print(f"{rating}\t{(hit_rate[rating] * 100):.6f}%")
 
     return hit_rate
 
@@ -114,7 +115,7 @@ def get_cumulative_hit_rate(top_n: dict[int, list], left_out_predictions: list, 
 
     # Print to console
     if auto_print:
-        print(f"{Style.BRIGHT}Cumulative hit rate (min_rating={min_rating}):{Style.NORMAL} {(hit_rate * 100):.4f}%")
+        print(f"{Style.BRIGHT}Cumulative hit rate (min_rating={min_rating}):{Style.NORMAL} {(hit_rate * 100):.6f}%")
 
     return hit_rate
 
