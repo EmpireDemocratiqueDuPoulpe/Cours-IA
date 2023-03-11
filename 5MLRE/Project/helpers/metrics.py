@@ -21,7 +21,7 @@ def map_predictions(predictions: list) -> defaultdict[int, list[list[int, float,
     return user_to_predictions
 
 
-def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: bool = False) -> defaultdict[int, list[list[int, float, float]]]:
+def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: bool = False) -> dict[int, list[list[int, float, float]]]:
     """ Returns the top-N recommendation for each user. """
     top_n = map_predictions(predictions)
 
@@ -34,7 +34,7 @@ def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: 
     if verbose:
         print(f"Built top-N for each user (n={n}, min_rating={min_rating})")
 
-    return top_n
+    return dict(top_n)
 
 
 def is_in_top_n(top_n: dict[int, list], user_id: int | str, item_id: int | str) -> bool:
