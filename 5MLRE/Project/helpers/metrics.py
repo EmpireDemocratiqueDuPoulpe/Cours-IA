@@ -3,11 +3,15 @@
 #           Functions that compute metrics to estimate the performance of the recommendation system.                   #
 # #################################################################################################################### #
 
+# Model processing
+import surprise
+
 # Console output
 from colorama import Style
 
 # Misc.
 from collections import defaultdict
+import itertools
 
 
 # ### Top-N ############################################################################################################
@@ -171,6 +175,57 @@ def get_user_coverage(top_n: dict[int, list], num_users: int, min_rating: float 
 
     # Print to console
     if auto_print:
-        print(f"{Style.BRIGHT}User coverage (num_users={num_users}, min_rating={min_rating}):{Style.NORMAL} {user_coverage}")
+        print(f"{Style.BRIGHT}User coverage (num_users={num_users}, min_rating={min_rating}):{Style.NORMAL} {(user_coverage * 100):.6f}%")
 
     return user_coverage
+
+
+# ### Diversity ########################################################################################################
+def get_diversity(top_n: dict[int, list], model: surprise.prediction_algorithms.algo_base.AlgoBase, auto_print: bool = False) -> float:
+    """ Compute the diversity. """
+    n = 0
+    total = 0
+    similarities_matrix = model.compute_similarities()
+
+    for user_id in top_n.keys():
+        pairs = itertools.combinations(iterable=top_n[user_id], r=2)
+
+        for pair in pairs:
+            item1 = pair[0][0]
+            item2 = pair[1][0]
+            inner_id1 = model.trainset.to_inner_iid(str(item1))
+            inner_id2 = model.trainset.to_inner_iid(str(item2))
+
+            similarity = similarities_matrix[inner_id1][inner_id2]
+            total += similarity
+            n += 1
+
+        S = total / n
+        S_minus_one = 1 - S
+
+        if auto_print:
+            print(f"{Style.BRIGHT}Diversity:{Style.NORMAL} {S_minus_one:.6f}")
+
+        return S_minus_one
+
+
+# ### Novelty ##########################################################################################################
+def get_novelty(top_n: dict[int, list], rankings, auto_print: bool = False) -> float:
+    """ Compute novelty. """
+    n = 0
+    total = 0
+
+    for user_id in top_n.keys():
+        for ratings in top_n[user_id]:
+            item_id = ratings[0]
+            rank = rankings[item_id]
+
+            total += rank
+            n += 1
+
+    novelty = total / n
+
+    if auto_print:
+        print(f"{Style.BRIGHT}Novelty:{Style.NORMAL} {novelty:.6f}")
+
+    return novelty

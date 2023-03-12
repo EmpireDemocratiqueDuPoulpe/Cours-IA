@@ -3,6 +3,7 @@
 #           Utility functions used in the notebooks.                                                                   #
 # #################################################################################################################### #
 
-__all__ = ["metrics"]
+__all__ = ["metrics", "ml"]
 
 from . import metrics
+from . import ml
