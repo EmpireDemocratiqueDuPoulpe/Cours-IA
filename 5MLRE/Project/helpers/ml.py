@@ -88,6 +88,7 @@ def run_model(name: str,
         grid_search_start_time = grid_search_end_time = None
 
     # Accuracy calculation
+    best_model = model(**best_params)
     top_n, model_start_time, model_end_time = compute_metrics(model=best_model, dataset=dataset, best_params=best_params, seed=seed)
 
     # Save the model to the disk
@@ -123,7 +124,8 @@ def compute_metrics(
     Returns a tuple containing the predicted top-N and the start and the end time of the training.
     """
     top_n = model_start_time = model_end_time = None
-    LOOCV = surprise.model_selection.LeaveOneOut(n_splits=1, min_n_ratings=1, random_state=seed)
+    # LOOCV = surprise.model_selection.LeaveOneOut(n_splits=1, min_n_ratings=1, random_state=seed)
+    LOOCV = surprise.model_selection.LeaveOneOut(n_splits=1, random_state=seed)
 
     reset_random_seed(seed)
     for data_train_LOOCV, data_test_LOOCV in LOOCV.split(dataset):

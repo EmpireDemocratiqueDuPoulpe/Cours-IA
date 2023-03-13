@@ -3,11 +3,14 @@
 #           Functions that compute metrics to estimate the performance of the recommendation system.                   #
 # #################################################################################################################### #
 
+# Data
+import pandas
+
 # Model processing
 import surprise
 
 # Console output
-from colorama import Style
+from colorama import Style, Fore
 
 # Misc.
 from collections import defaultdict
@@ -18,9 +21,17 @@ import itertools
 def map_predictions(predictions: list) -> defaultdict[int, list[list[int, float, float]]]:
     """ Map the predictions to each user. """
     user_to_predictions = defaultdict(list)
+    num_impossible = 0
 
-    for user_id, item_id, true_rating, estimated_rating, _ in predictions:
+    for user_id, item_id, true_rating, estimated_rating, details in predictions:
         user_to_predictions[int(user_id)].append((int(item_id), float(estimated_rating), float(true_rating)))
+
+        if details["was_impossible"]:
+            num_impossible += 1
+
+    if num_impossible > 0:
+        num_predictions = len(predictions)
+        print(f"{Fore.YELLOW}Warning: {num_impossible}/{num_predictions} ({(num_impossible * 100) / num_predictions:.6f}%) predictions were impossible! {Fore.RESET}")
 
     return user_to_predictions
 
@@ -31,14 +42,43 @@ def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: 
 
     # Compute the top-N for each user
     for user_id, ratings in top_n.items():
-        ratings.sort(key=(lambda x: x[1]), reverse=True)  # Sort the ratings list by the estimated rating of each item
-        top_n[user_id] = ratings[:n]  # Cut down the top
-        top_n[user_id] = list(filter((lambda x: x[1] >= min_rating), ratings))  # Filter the ratings below the threshold
+        ratings_sorted = sorted(ratings, key=(lambda x: x[1]), reverse=True)  # Sort the ratings list by the estimated rating of each item
+        ratings_shortened = ratings_sorted[:n]  # Cut down the top
+        top_n[user_id] = list(filter((lambda x: x[1] >= min_rating), ratings_shortened))  # Filter the ratings below the threshold
 
     if verbose:
         print(f"Built top-N for each user (n={n}, min_rating={min_rating})")
 
     return dict(top_n)
+
+
+def get_top_n_of(user_id: int, top_n: dict[int, list], items_df: pandas.DataFrame, auto_print: bool = False) -> pandas.DataFrame:
+    """ Returns the formatted top-N recommendation for a specific user. """
+    user_top = []
+
+    # Fetch and fill the top-N
+    for top_item_id, estimated_rating, true_rating in top_n[user_id]:
+        item = items_df[items_df["anime_id"] == top_item_id].iloc[0]
+        user_top.append({
+            "Name": item["name"],
+            "Genre": item["genre"],
+            "Num. ratings": item["num_ratings"],
+            "Mean ratings": item["rating"],
+            "User - Estimated rating": estimated_rating,
+            "User - True rating": true_rating
+        })
+
+    # Transform to a DataFrame
+    user_top = pandas.DataFrame(
+        data=user_top,
+        index=["Name", "Genre", "Num. ratings", "Mean ratings", "User - Estimated rating", "User - True rating"]
+    )
+
+    if auto_print:
+        print(f"Top-N of user_id \"{user_id}\":")
+        print(user_top)
+
+    return user_top
 
 
 def is_in_top_n(top_n: dict[int, list], user_id: int | str, item_id: int | str) -> bool:
