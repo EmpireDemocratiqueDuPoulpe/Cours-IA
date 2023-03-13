@@ -157,6 +157,6 @@ def compute_metrics(
         metrics.get_cumulative_hit_rate(top_n=top_n, left_out_predictions=left_out_predictions, min_rating=4.0, auto_print=True)
         metrics.get_average_reciprocal_hit_rank(top_n=top_n, left_out_predictions=left_out_predictions, auto_print=True)
         metrics.get_user_coverage(top_n=top_n, num_users=data_train_LOOCV.n_users, min_rating=4.0, auto_print=True)
-        metrics.get_diversity(top_n=top_n, model=model, auto_print=True)
+        # metrics.get_diversity(top_n=top_n, model=model, auto_print=True)  # Simply bugged
 
     return top_n, model_start_time, model_end_time
