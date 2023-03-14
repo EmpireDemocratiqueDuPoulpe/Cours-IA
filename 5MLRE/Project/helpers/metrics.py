@@ -31,20 +31,20 @@ def map_predictions(predictions: list) -> defaultdict[int, list[list[int, float,
 
     if num_impossible > 0:
         num_predictions = len(predictions)
-        print(f"{Fore.YELLOW}Warning: {num_impossible}/{num_predictions} ({(num_impossible * 100) / num_predictions:.6f}%) predictions were impossible! {Fore.RESET}")
+        print(f"{Fore.YELLOW}Warning: {num_impossible}/{num_predictions} ({(num_impossible * 100) / num_predictions:.6f}%) predictions were impossible! {Fore.RESET}")  # noqa: E501
 
     return user_to_predictions
 
 
-def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: bool = False) -> dict[int, list[list[int, float, float]]]:
+def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: bool = False) -> dict[int, list[list[int, float, float]]]:  # noqa: E501
     """ Returns the top-N recommendation for each user. """
     top_n = map_predictions(predictions)
 
     # Compute the top-N for each user
     for user_id, ratings in top_n.items():
-        ratings_sorted = sorted(ratings, key=(lambda x: x[1]), reverse=True)  # Sort the ratings list by the estimated rating of each item
+        ratings_sorted = sorted(ratings, key=(lambda x: x[1]), reverse=True)  # Sort the ratings list by the estimated rating of each item  # noqa: E501
         ratings_shortened = ratings_sorted[:n]  # Cut down the top
-        top_n[user_id] = list(filter((lambda x: x[1] >= min_rating), ratings_shortened))  # Filter the ratings below the threshold
+        top_n[user_id] = list(filter((lambda x: x[1] >= min_rating), ratings_shortened))  # Filter the ratings below the threshold  # noqa: E501
 
     if verbose:
         print(f"Built top-N for each user (n={n}, min_rating={min_rating})")
@@ -52,7 +52,7 @@ def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: 
     return dict(top_n)
 
 
-def get_top_n_of(user_id: int, top_n: dict[int, list], items_df: pandas.DataFrame, auto_print: bool = False) -> pandas.DataFrame:
+def get_top_n_of(user_id: int, top_n: dict[int, list], items_df: pandas.DataFrame, auto_print: bool = False) -> pandas.DataFrame:  # noqa: E501
     """ Returns the formatted top-N recommendation for a specific user. """
     user_top = []
 
@@ -113,7 +113,7 @@ def get_hit_rate(top_n: dict[int, list], left_out_predictions: list, auto_print:
     return hit_rate
 
 
-def get_rating_hit_rate(top_n: dict[int, list], left_out_predictions: list, auto_print: bool = False) -> dict[str, float]:
+def get_rating_hit_rate(top_n: dict[int, list], left_out_predictions: list, auto_print: bool = False) -> dict[str, float]:  # noqa: E501
     """ Compute the overall hit rate per rating. """
     hits = defaultdict(float)
     total = defaultdict(float)
@@ -141,7 +141,7 @@ def get_rating_hit_rate(top_n: dict[int, list], left_out_predictions: list, auto
     return hit_rate
 
 
-def get_cumulative_hit_rate(top_n: dict[int, list], left_out_predictions: list, min_rating: float = 4.0, auto_print: bool = False) -> float:
+def get_cumulative_hit_rate(top_n: dict[int, list], left_out_predictions: list, min_rating: float = 4.0, auto_print: bool = False) -> float:  # noqa: E501
     """ Compute the cumulative hit rate. """
     hits = 0
     total = 0
@@ -164,7 +164,7 @@ def get_cumulative_hit_rate(top_n: dict[int, list], left_out_predictions: list, 
     return hit_rate
 
 
-def get_average_reciprocal_hit_rank(top_n: dict[int, list], left_out_predictions: list, auto_print: bool = False) -> float:
+def get_average_reciprocal_hit_rank(top_n: dict[int, list], left_out_predictions: list, auto_print: bool = False) -> float:  # noqa: E501
     """ Compute average reciprocal hit rank (ARHR). """
     summation = 0
     total = 0
@@ -196,7 +196,7 @@ def get_average_reciprocal_hit_rank(top_n: dict[int, list], left_out_predictions
 
 
 # ### Coverages ########################################################################################################
-def get_user_coverage(top_n: dict[int, list], num_users: int, min_rating: float = 4.0, auto_print: bool = False) -> float:
+def get_user_coverage(top_n: dict[int, list], num_users: int, min_rating: float = 4.0, auto_print: bool = False) -> float:  # noqa: E501
     """ Compute the user coverage. """
     hits = 0
 
@@ -215,13 +215,13 @@ def get_user_coverage(top_n: dict[int, list], num_users: int, min_rating: float 
 
     # Print to console
     if auto_print:
-        print(f"{Style.BRIGHT}User coverage (num_users={num_users}, min_rating={min_rating}):{Style.NORMAL} {(user_coverage * 100):.6f}%")
+        print(f"{Style.BRIGHT}User coverage (num_users={num_users}, min_rating={min_rating}):{Style.NORMAL} {(user_coverage * 100):.6f}%")  # noqa: E501
 
     return user_coverage
 
 
 # ### Diversity ########################################################################################################
-def get_diversity(top_n: dict[int, list], model: surprise.prediction_algorithms.algo_base.AlgoBase, auto_print: bool = False) -> float:
+def get_diversity(top_n: dict[int, list], model: surprise.prediction_algorithms.algo_base.AlgoBase, auto_print: bool = False) -> float:  # noqa: E501
     """ Compute the diversity. """
     n = 0
     total = 0
@@ -250,14 +250,13 @@ def get_diversity(top_n: dict[int, list], model: surprise.prediction_algorithms.
 
 
 # ### Novelty ##########################################################################################################
-def get_novelty(top_n: dict[int, list], rankings, auto_print: bool = False) -> float:
+def get_novelty(top_n: dict[int, list], rankings: dict[int, int], auto_print: bool = False) -> float:
     """ Compute novelty. """
     n = 0
     total = 0
 
     for user_id in top_n.keys():
-        for ratings in top_n[user_id]:
-            item_id = ratings[0]
+        for item_id, _, _ in top_n[user_id]:
             rank = rankings[item_id]
 
             total += rank
