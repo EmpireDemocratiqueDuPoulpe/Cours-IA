@@ -59,7 +59,7 @@ class ModelEvaluator:
         # Training and testing sets to compute basic metrics [RMSE, MAE, ...]
         print(f"Constructing sets. This can take a while...{Fore.WHITE}{Style.DIM}")
 
-        print(f"{Fore.WHITE}{Style.DIM}   > Building train/test sets..{Fore.WHITE}{Style.DIM}")
+        print(f"{Fore.WHITE}{Style.DIM}   > Building train/test sets...{Fore.WHITE}{Style.DIM}")
         self._reset_random_seed()
         self._train_set, self._test_set = surprise.model_selection.train_test_split(
             data=self._dataset,
@@ -69,9 +69,10 @@ class ModelEvaluator:
         )
 
         # LeaveOneOut sets for top-N and hit-rate metrics
-        print(f"{Fore.WHITE}{Style.DIM}   > Building LeaveOneOut sets..{Fore.WHITE}{Style.DIM}")
+        print(f"{Fore.WHITE}{Style.DIM}   > Building LeaveOneOut sets...{Fore.WHITE}{Style.DIM}")
         self._reset_random_seed()
-        LOOCV = surprise.model_selection.LeaveOneOut(n_splits=1, random_state=self._get_seed())
+        # LOOCV = surprise.model_selection.LeaveOneOut(n_splits=1, random_state=self._get_seed())
+        LOOCV = surprise.model_selection.LeaveOneOut(n_splits=1, min_n_ratings=1, random_state=self._get_seed())
 
         for data_train_LOOCV, data_test_LOOCV in LOOCV.split(data=self._dataset):
             self._train_LOOCV = data_train_LOOCV
@@ -80,13 +81,13 @@ class ModelEvaluator:
         self._anti_test_LOOCV = self._train_LOOCV.build_anti_testset()
 
         # Full sets
-        print(f"{Fore.WHITE}{Style.DIM}   > Building full sets..{Fore.WHITE}{Style.DIM}")
+        print(f"{Fore.WHITE}{Style.DIM}   > Building full sets...{Fore.WHITE}{Style.DIM}")
         self._full_train_set = self._dataset.build_full_trainset()
         self._full_anti_test_set = self._full_train_set.build_anti_testset()
 
         # Prepare the model that compute the similarities matrix for the "diversity" metric
         if with_similarities:
-            print(f"{Fore.WHITE}{Style.DIM}   > Preparing the similarities model..{Fore.WHITE}{Style.DIM}")
+            print(f"{Fore.WHITE}{Style.DIM}   > Preparing the similarities model...{Fore.WHITE}{Style.DIM}")
             self._similarities_model = surprise.KNNBaseline(sim_options={"name": "cosine", "user_based": False})
             self._similarities_model.fit(self._full_train_set)
 
@@ -174,6 +175,7 @@ class ModelEvaluator:
         self._models[name].save_best(estimator=best_model, params=best_params, folder=self._models_folder)
 
         # Accuracy calculation
+        self._compute_metrics(name=name)
 
     def _compute_metrics(self, name: str) -> None:
         """ Compute and display the model metrics. """
@@ -194,12 +196,12 @@ class ModelEvaluator:
         print(f"{Fore.WHITE}{Style.DIM}Building the top-N...{Fore.WHITE}{Style.DIM}")
         self._models[name].save_timing(category="top_n_building", when="start")
 
-        print(f"{Fore.WHITE}{Style.DIM}   > Fitting on the LOOCV..{Fore.WHITE}{Style.DIM}")
+        print(f"{Fore.WHITE}{Style.DIM}   > Fitting on the LOOCV...{Fore.WHITE}{Style.DIM}")
         estimator.fit(self._train_LOOCV)
         predictions_LOOCV = estimator.test(self._test_LOOCV)  # Left-out predictions
         all_predictions_LOOCV = estimator.test(self._anti_test_LOOCV)  # All predictions
 
-        print(f"{Fore.WHITE}{Style.DIM}   > Fitting on the full set..{Fore.WHITE}{Style.DIM}")
+        print(f"{Fore.WHITE}{Style.DIM}   > Fitting on the full set...{Fore.WHITE}{Style.DIM}")
         estimator.fit(self._full_train_set)
         all_predictions_full = estimator.test(self._full_anti_test_set)  # All predictions
 
@@ -376,7 +378,10 @@ class Model:
         print(f"\n{Style.RESET_ALL}Testing of the \"{self.get_name()}\" model successfully completed{run_elapsed_time}.")  # noqa: E501
 
         # Print the sub-timings
-        for key, timing in self._timings:
+        for key, timing in self._timings.items():
+            if key == "run":
+                continue
+        
             name = timing["name"] if timing["name"] is not None else key
             elapsed_time = compute_timing(timing)
 
