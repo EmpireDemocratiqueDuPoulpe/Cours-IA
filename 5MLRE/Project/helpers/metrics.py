@@ -12,6 +12,9 @@ import surprise
 # Console output
 from colorama import Style, Fore
 
+# Jupyter output
+from IPython.utils import io
+
 # Misc.
 from collections import defaultdict
 import itertools
@@ -104,7 +107,7 @@ def get_hit_rate(top_n: dict[int, list], left_out_predictions: list, auto_print:
         if hit:
             hits += 1
 
-    hit_rate = hits / total
+    hit_rate = total and (hits / total) or 0  # Prevent "division by zero" error
 
     # Print to console
     if auto_print:
@@ -133,7 +136,7 @@ def get_rating_hit_rate(top_n: dict[int, list], left_out_predictions: list, auto
         print("Rating\tHit rate")
 
     for rating in sorted(hits.keys()):
-        hit_rate[rating] = hits[rating] / total[rating]
+        hit_rate[rating] = total[rating] and (hits[rating] / total[rating]) or 0  # Prevent "division by zero" error
 
         if auto_print:
             print(f"{rating}\t{(hit_rate[rating] * 100):.6f}%")
@@ -155,7 +158,7 @@ def get_cumulative_hit_rate(top_n: dict[int, list], left_out_predictions: list, 
             if hit:
                 hits += 1
 
-    hit_rate = hits / total
+    hit_rate = total and (hits / total) or 0  # Prevent "division by zero" error
 
     # Print to console
     if auto_print:
@@ -175,7 +178,7 @@ def get_average_reciprocal_hit_rank(top_n: dict[int, list], left_out_predictions
         hit_rank = 0
         rank = 0
 
-        for top_item_id, _, _ in top_n[user_id]:
+        for top_item_id, _, _ in top_n[int(user_id)]:
             rank += 1
 
             if top_item_id == int(item_id):
@@ -186,7 +189,7 @@ def get_average_reciprocal_hit_rank(top_n: dict[int, list], left_out_predictions
         if hit_rank > 0:
             summation += 1.0 / hit_rank
 
-    hit_rank = summation / total
+    hit_rank = total and (summation / total) or 0  # Prevent "division by zero" error
 
     # Print to console
     if auto_print:
@@ -211,7 +214,7 @@ def get_user_coverage(top_n: dict[int, list], num_users: int, min_rating: float 
         if hit:
             hits += 1
 
-    user_coverage = hits / num_users
+    user_coverage = num_users and (hits / num_users) or 0  # Prevent "division by zero" error
 
     # Print to console
     if auto_print:
@@ -225,7 +228,9 @@ def get_diversity(top_n: dict[int, list], model: surprise.prediction_algorithms.
     """ Compute the diversity. """
     n = 0
     total = 0
-    similarities_matrix = model.compute_similarities()
+    
+    with io.capture_output():
+        similarities_matrix = model.compute_similarities()
 
     for user_id in top_n.keys():
         pairs = itertools.combinations(iterable=top_n[user_id], r=2)
@@ -240,7 +245,7 @@ def get_diversity(top_n: dict[int, list], model: surprise.prediction_algorithms.
             total += similarity
             n += 1
 
-        S = total / n
+        S = n and (total / n) or 0  # Prevent "division by zero" error
         S_minus_one = 1 - S
 
         if auto_print:
@@ -256,13 +261,13 @@ def get_novelty(top_n: dict[int, list], rankings: dict[int, int], auto_print: bo
     total = 0
 
     for user_id in top_n.keys():
-        for item_id, _, _ in top_n[user_id]:
-            rank = rankings[item_id]
+        for top_item_id, _, _ in top_n[user_id]:
+            rank = rankings[top_item_id]
 
             total += rank
             n += 1
 
-    novelty = total / n
+    novelty = n and (total / n) or 0  # Prevent "division by zero" error
 
     if auto_print:
         print(f"{Style.BRIGHT}Novelty:{Style.NORMAL} {novelty:.6f}")
