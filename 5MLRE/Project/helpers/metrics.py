@@ -55,35 +55,6 @@ def get_top_n(predictions: list, n: int = 10, min_rating: float = 4.0, verbose: 
     return dict(top_n)
 
 
-def get_top_n_of(user_id: int, top_n: dict[int, list], items_df: pandas.DataFrame, auto_print: bool = False) -> pandas.DataFrame:  # noqa: E501
-    """ Returns the formatted top-N recommendation for a specific user. """
-    user_top = []
-
-    # Fetch and fill the top-N
-    for top_item_id, estimated_rating, true_rating in top_n[user_id]:
-        item = items_df[items_df["anime_id"] == top_item_id].iloc[0]
-        user_top.append({
-            "Name": item["name"],
-            "Genre": item["genre"],
-            "Num. ratings": item["num_ratings"],
-            "Mean ratings": item["rating"],
-            "User - Estimated rating": estimated_rating,
-            "User - True rating": true_rating
-        })
-
-    # Transform to a DataFrame
-    user_top = pandas.DataFrame(
-        data=user_top,
-        index=["Name", "Genre", "Num. ratings", "Mean ratings", "User - Estimated rating", "User - True rating"]
-    )
-
-    if auto_print:
-        print(f"Top-N of user_id \"{user_id}\":")
-        print(user_top)
-
-    return user_top
-
-
 def is_in_top_n(top_n: dict[int, list], user_id: int | str, item_id: int | str) -> bool:
     """ Returns true if the `item_id` is in the `top_n` of `user_id`. """
     for top_item_id, _, _ in top_n[int(user_id)]:
