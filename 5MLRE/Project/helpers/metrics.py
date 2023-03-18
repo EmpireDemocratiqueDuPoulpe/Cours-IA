@@ -193,7 +193,7 @@ def get_average_reciprocal_hit_rank(top_n: dict[int, list], left_out_predictions
 
     # Print to console
     if auto_print:
-        print(f"{Style.BRIGHT}Average reciprocal hit rate:{Style.NORMAL} {hit_rank}")
+        print(f"{Style.BRIGHT}Average reciprocal hit rank:{Style.NORMAL} {hit_rank}")
 
     return hit_rank
 
