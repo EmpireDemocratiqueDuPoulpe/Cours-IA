@@ -1,0 +1,3 @@
+# Ignore stuff in the local folder
+local/
+!local/.keep
