@@ -1,0 +1,11 @@
+# Data
+data/*
+!data/.keep
+
+# Models folder
+models/
+!models/.keep
+
+# Temp folder
+temp/
+!temp/.keep
