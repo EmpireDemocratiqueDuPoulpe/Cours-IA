@@ -1,0 +1,36 @@
+25/03/2023 - Installation serveur jupyter / mlflow
+docker network create --driver bridge 5mlre-network
+
+docker build --tag 5mlre_jupyter ./jupyter-server
+docker build --tag 5mlre_mlflow ./mlflow-server
+
+docker run --interactive \
+           --tty \
+           --rm \
+           --user root \
+           --publish 8888:8888 \
+           --publish 8000:8000 \
+           --publish 4200:4200 \
+           --volume ${PWD}/mlflow-server/local:/mlflow \
+           --env JUPYTER_ENABLE_LAB=yes \
+           --env MLFLOW_TRACKING_URI=http://mlflow:5000 \
+           --network 5mlre-network \
+           --name jupyter \
+           --detach \
+           5mlre_jupyter
+
+> ONE LINER : docker run --interactive --tty --rm --user root --publish 8888:8888 --publish 8000:8000 --publish 4200:4200 --env JUPYTER_ENABLE_LAB=yes --env MLFLOW_TRACKING_URI=http://mlflow:5000 --network 5mlre-network --name jupyter --detach 5mlre_jupyter
+
+docker run --interactive \
+           --tty \
+           --rm \
+           --user root \
+           --publish 5000:5000 \
+           --volume ${PWD}/mlflow-server/local:/mlflow \
+           --network 5mlre-network \
+           --name mlflow \
+           --detach \
+           5mlre_mlflow
+
+> ONE LINER : docker run --interactive --tty --rm --user root --publish 5000:5000 --volume ${PWD}/mlflow-server/local:/mlflow --network 5mlre-network --name mlflow --detach 5mlre_mlflow
+
