@@ -14,26 +14,29 @@ config_version: 3.0
 # You can use the CLI command `great_expectations datasource new` to help you
 # add a new datasource. Read more at https://docs.greatexpectations.io/docs/guides/connecting_to_your_data/connect_to_data_overview
 datasources:
-  Android_Malware:
-    data_connectors:
-      csv_data_connector:
-        batch_spec_passthrough:
-          reader_method: read_csv
-          reader_options: {}
-        class_name: ConfiguredAssetFilesystemDataConnector
-        module_name: great_expectations.datasource.data_connector
-        assets:
-          android_malware_2023:
-            class_name: Asset
-            pattern: Android_Malware_cleaned_2023_(.*)\.csv
-            module_name: great_expectations.datasource.data_connector.asset
-            group_names:
-              - month
-        base_directory: /app/data
+  android_malware:
     class_name: Datasource
     execution_engine:
       class_name: PandasExecutionEngine
       module_name: great_expectations.execution_engine
+    data_connectors:
+      default_inferred_data_connector_name:
+        class_name: InferredAssetFilesystemDataConnector
+        default_regex:
+          group_names:
+            - data_asset_name
+          pattern: (.*)
+        module_name: great_expectations.datasource.data_connector
+        base_directory: ../data
+      default_runtime_data_connector_name:
+        class_name: RuntimeDataConnector
+        assets:
+          my_runtime_asset_name:
+            class_name: Asset
+            module_name: great_expectations.datasource.data_connector.asset
+            batch_identifiers:
+              - runtime_batch_identifier_name
+        module_name: great_expectations.datasource.data_connector
     module_name: great_expectations.datasource
 
 # This config file supports variable substitution which enables: 1) keeping
@@ -117,13 +120,9 @@ data_docs_sites:
 
 anonymous_usage_statistics:
   enabled: true
-  data_context_id: 466fc709-08f7-404c-b9bf-a35c3fefc724
-fluent_datasources:
-  default_pandas_datasource:
-    type: pandas
-    name: default_pandas_datasource
-include_rendered_content:
-  globally: false
-  expectation_validation_result: false
-  expectation_suite: false
+  data_context_id: b7609835-a911-46a2-9492-d0fef9db20fd
 notebooks:
+include_rendered_content:
+  expectation_suite: false
+  expectation_validation_result: false
+  globally: false

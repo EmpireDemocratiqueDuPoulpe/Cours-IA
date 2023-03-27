@@ -7,7 +7,7 @@ docker build --tag 5mlre_mlflow ./mlflow-server
 docker run --interactive \
            --tty \
            --user root \
-           --publish 8888:8888 \
+           --publish 10000:8888 \
            --publish 8000:8000 \
            --publish 4200:4200 \
            --volume ${PWD}/mlflow-server/local:/mlflow \
@@ -18,7 +18,7 @@ docker run --interactive \
            --detach \
            5mlre_jupyter
 
-> ONE LINER : docker run --interactive --tty --user root --publish 8888:8888 --publish 8000:8000 --publish 4200:4200 --env JUPYTER_ENABLE_LAB=yes --env MLFLOW_TRACKING_URI=http://mlflow:5000 --network 5mlre-network --name jupyter --detach 5mlre_jupyter
+> ONE LINER : docker run --interactive --tty --user root --publish 10000:8888 --publish 8000:8000 --publish 4200:4200 --env JUPYTER_ENABLE_LAB=yes --env MLFLOW_TRACKING_URI=http://mlflow:5000 --network 5mlre-network --name jupyter --detach 5mlre_jupyter
 
 docker run --interactive \
            --tty \
