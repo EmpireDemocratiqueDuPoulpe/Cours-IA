@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Create folder structure
 COPY ./bin ./bin
+COPY ./config ./config
 COPY ./data ./data
 COPY ./helpers ./helpers
 COPY ./lib ./lib
@@ -20,8 +21,6 @@ ENV PYTHONPATH "$PYTHONPATH:/app/lib"
 # Expose port
 # > Jupyter Lab
 EXPOSE 8888
-# > MLFlow server
-EXPOSE 5000
 # > Deployed model server
 EXPOSE 8000
 # > Prefect

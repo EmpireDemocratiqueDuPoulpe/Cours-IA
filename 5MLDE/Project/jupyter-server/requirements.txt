@@ -1,6 +1,8 @@
 # Data
 pandas
-seaborn
+matplotlib
+matplotx[all]
+PyYAML
 
 # Models
 scikit-learn
@@ -23,3 +25,4 @@ isort==5.12.0  # be sure to change the version in .pre-commit-config.yaml to mat
 
 # Misc.
 gdown
+colorama
