@@ -9,9 +9,12 @@ COPY ./config ./config
 COPY ./data ./data
 COPY ./helpers ./helpers
 COPY ./lib ./lib
+COPY ./locust ./locust
 COPY ./models ./models
 COPY ./notebooks ./notebooks
 COPY ./temp ./temp
+COPY ./web_service ./web_service
+COPY ./.gitignore ./.gitignore
 COPY ./requirements.txt ./requirements.txt
 
 # Install Python dependencies
