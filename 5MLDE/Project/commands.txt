@@ -1,4 +1,4 @@
-25/03/2023 - Installation serveur jupyter / mlflow
+####### SUR LE PC HÔTE
 docker network create --driver bridge 5mlde-network
 
 docker build --tag 5mlde_jupyter ./jupyter-server
@@ -33,8 +33,10 @@ docker run --interactive \
 
 > ONE LINER : docker run --interactive --tty --user root --publish 5000:5000 --volume ${PWD}/mlflow-server/local:/mlflow --network 5mlde-network --name mlflow --detach 5mlde_mlflow
 
+####### SUR LE TERMINAL DU SERVEUR JUPYTER
 make init_model_mlflow
 
+####### SUR LE PC HÔTE
 docker run --interactive \
            --tty \
            --user root \
@@ -46,3 +48,6 @@ docker run --interactive \
            5mlde_prediction-server
 
 > ONE LINER : docker run --interactive --tty --user root --publish 8001:8001 --volume ${PWD}/mlflow-server/local:/mlflow --network 5mlde-network --name prediction-server --detach 5mlde_prediction-server
+
+####### SUR LE TERMINAL DU SERVEUR JUPYTER
+python ./bin/post_payload.py
