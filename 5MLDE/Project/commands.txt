@@ -64,3 +64,14 @@ docker run --interactive \
            5mlde_locust
 
 > ONE LINER : docker run --interactive --tty --user root --publish 8089:8089 --network 5mlde-network --name locust-master --detach 5mlde_locust
+
+####### SUR LE TERMINAL DU SERVEUR JUPYTER
+# C'est l'une des deux, j'ai oublié laquelle
+# prefect config set PREFECT_API_URL=http://0.0.0.0:4200/api
+# prefect config set PREFECT_API_URL=http://localhost:4200/api
+
+
+prefect server start --host 0.0.0.0
+
+python ./bin/build_model.py
+python ./bin/setup_prefect_schedules.py

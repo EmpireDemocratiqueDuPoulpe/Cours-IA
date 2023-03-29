@@ -1,6 +1,10 @@
 # Model processing
 import mlflow
 
+# Misc.
+from prefect import flow
+from prefect.task_runners import SequentialTaskRunner
+
 # Local files
 from config import constants
 from lib.data_loading import load_data
@@ -8,7 +12,9 @@ from lib.data_preprocessing import prepare_data
 from lib.modelling import train_model, get_predictions, compute_accuracy, save_pipeline
 
 
-if __name__ == "__main__":
+@flow(name="build_model_mlflow", retries=3, retry_delay_seconds=3, task_runner=SequentialTaskRunner)
+def main() -> None:
+    """ Builds the model and send it as production to MLFlow. """
     # Initialize MLFlow
     mlflow.set_tracking_uri(constants.MLFLOW_TRACKING_URI)
     mlflow.set_experiment(constants.MLFLOW_EXPERIMENT_NAME)
@@ -54,3 +60,7 @@ if __name__ == "__main__":
         constants.LOGGER.info(msg=f"Send the model \"{constants.MLFLOW_MODEL_NAME}\" to production...")
         client = mlflow.MlflowClient()
         client.transition_model_version_stage(name=constants.MLFLOW_MODEL_NAME, version=1, stage="Production")
+
+
+if __name__ == "__main__":
+    main()

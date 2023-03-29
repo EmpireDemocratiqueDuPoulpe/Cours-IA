@@ -6,16 +6,20 @@
 # OS and filesystem
 from pathlib import Path
 import sys
-sys.path.append(".")
 
 # Data
 import pandas
 
+# Misc.
+from prefect import task
+
 # Local files
+sys.path.append(".")
 from config import constants
 
 
 # ### Functions ########################################################################################################
+@task(name="load_data", tags=["data", "load"])
 def load_data(path: Path, samples: int | None = 5_000) -> pandas.DataFrame:
     """ Loads the dataset. """
     constants.LOGGER.info(f"Loading the dataset at \"{path}\"")

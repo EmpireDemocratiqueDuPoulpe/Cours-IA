@@ -15,9 +15,11 @@ from sklearn.pipeline import Pipeline
 
 # Misc.
 import typing
+from prefect import task
 
 
 # ### Functions ########################################################################################################
+@task(name="prepare_data", tags=["data", "preprocessing"])
 def prepare_data(df: pandas.DataFrame) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
     """ Prepare the data for the training. Returns (x_train, x_test, y_train, y_test). """
     df = drop_unused_columns(df)

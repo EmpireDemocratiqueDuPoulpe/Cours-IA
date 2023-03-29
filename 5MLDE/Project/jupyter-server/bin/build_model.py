@@ -1,3 +1,7 @@
+# Misc.
+from prefect import flow
+from prefect.task_runners import SequentialTaskRunner
+
 # Local files
 from config import constants
 from lib.data_loading import load_data
@@ -5,7 +9,9 @@ from lib.data_preprocessing import prepare_data
 from lib.modelling import train_model, get_predictions, compute_accuracy, save_pipeline
 
 
-if __name__ == "__main__":
+@flow(name="build_model", retries=3, retry_delay_seconds=3, task_runner=SequentialTaskRunner)
+def main() -> None:
+    """ Builds the model and save the fitted pipeline to the disk. """
     # Get the data
     data = load_data(path=(constants.DATA_FOLDER / "Android_Malware_cleaned.csv"), samples=5_000)
     x_train, x_test, y_train, y_test = prepare_data(df=data)
@@ -27,3 +33,7 @@ if __name__ == "__main__":
         path=(constants.MODELS_FOLDER / f"pipeline__v{constants.MODEL_VERSION}.joblib"),
         logger=constants.LOGGER
     )
+
+
+if __name__ == "__main__":
+    main()
