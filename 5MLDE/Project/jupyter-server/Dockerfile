@@ -9,7 +9,6 @@ COPY ./config ./config
 COPY ./data ./data
 COPY ./helpers ./helpers
 COPY ./lib ./lib
-COPY ./locust ./locust
 COPY ./models ./models
 COPY ./notebooks ./notebooks
 COPY ./temp ./temp
@@ -29,7 +28,7 @@ ENV PYTHONPATH "$PYTHONPATH:/app/lib"
 # Expose port
 # > Jupyter Lab
 EXPOSE 8888
-# > Deployed model server
+# > Deployed model server (internal. Not to confuse with the 8001 port of the standalone server)
 EXPOSE 8000
 # > Prefect
 EXPOSE 4200

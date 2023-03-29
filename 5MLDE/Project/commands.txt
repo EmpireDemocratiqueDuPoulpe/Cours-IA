@@ -4,6 +4,7 @@ docker network create --driver bridge 5mlde-network
 docker build --tag 5mlde_jupyter ./jupyter-server
 docker build --tag 5mlde_mlflow ./mlflow-server
 docker build --tag 5mlde_prediction-server ./prediction-server
+docker build --tag 5mlde_locust ./locust-master
 
 docker run --interactive \
            --tty \
@@ -51,3 +52,15 @@ docker run --interactive \
 
 ####### SUR LE TERMINAL DU SERVEUR JUPYTER
 python ./bin/post_payload.py
+
+####### SUR LE PC HÔTE
+docker run --interactive \
+           --tty \
+           --user root \
+           --publish 8089:8089 \
+           --network 5mlde-network \
+           --name locust-master \
+           --detach \
+           5mlde_locust
+
+> ONE LINER : docker run --interactive --tty --user root --publish 8089:8089 --network 5mlde-network --name locust-master --detach 5mlde_locust
