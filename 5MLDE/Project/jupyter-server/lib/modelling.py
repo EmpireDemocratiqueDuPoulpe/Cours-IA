@@ -38,11 +38,11 @@ def train_model(x_train: numpy.ndarray, y_train: numpy.ndarray) -> Pipeline:
 
 
 # ### Predicting #######################################################################################################
-def get_predictions(pipeline: Pipeline, x_test: numpy.ndarray, y_test: numpy.ndarray, logger: logging.Logger) -> pandas.Series:
+def get_predictions(pipeline: Pipeline, x_test: numpy.ndarray, logger: logging.Logger) -> pandas.Series:
     """ Uses a trained model to build a prediction array. """
     logger.info(msg="Making predictions...")
 
-    predictions = pipeline.predict(x_test, y_test)
+    predictions = pipeline.predict(x_test)
     return predictions
 
 

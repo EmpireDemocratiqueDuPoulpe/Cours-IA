@@ -15,7 +15,13 @@ COPY ./notebooks ./notebooks
 COPY ./temp ./temp
 COPY ./web_service ./web_service
 COPY ./.gitignore ./.gitignore
+COPY ./Makefile ./Makefile
 COPY ./requirements.txt ./requirements.txt
+
+# Install system dependencies
+USER root
+RUN apt update
+RUN apt install build-essential -y
 
 # Install Python dependencies
 RUN bash ./bin/install_requirements.sh

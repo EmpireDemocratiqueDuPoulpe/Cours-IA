@@ -5,12 +5,14 @@
 
 # OS and filesystem
 from pathlib import Path
+import sys
+sys.path.append(".")
 
 # Data
 import pandas
 
 # Local files
-from ..config import constants
+from config import constants
 
 
 # ### Functions ########################################################################################################
@@ -109,7 +111,7 @@ def load_data(path: Path, samples: int | None = 5_000) -> pandas.DataFrame:
     data = sanitize_dataset(data)
 
     if samples is not None:
-        data = data.samples(n=samples)
+        data = data.sample(n=samples)
 
     return data
 
@@ -120,22 +122,19 @@ def sanitize_dataset(df: pandas.DataFrame) -> pandas.DataFrame:
     df_sanitized.columns = df_sanitized.columns.str.strip()
 
     # Drop duplicates and missing values
-    df_sanitized = df.drop_duplicates(keep="first", inplace=False)
+    df_sanitized = df_sanitized.drop_duplicates(keep="first", inplace=False)
     df_sanitized = df_sanitized.dropna(inplace=False)
 
     # Clean the "CWE Flag Count" column
     df_sanitized.drop(df_sanitized.loc[df_sanitized["CWE Flag Count"] == "SCAREWARE"].index, inplace=True)
     df_sanitized["CWE Flag Count"] = df_sanitized["CWE Flag Count"].astype(int)
-    df_sanitized["CWE Flag Count"].value_counts(normalize=True)
 
     # Clean the "Fwd Avg Bytes/Bulk" column
     df_sanitized.drop(df_sanitized.loc[df_sanitized["Fwd Avg Bytes/Bulk"] == "BENIGN"].index, inplace=True)
     df_sanitized["Fwd Avg Bytes/Bulk"] = df_sanitized["Fwd Avg Bytes/Bulk"].astype(float)
-    df_sanitized["Fwd Avg Bytes/Bulk"].value_counts(normalize=True)
 
     # Clean the "Down/Up Ratio" column
     df_sanitized.drop(df_sanitized.loc[df_sanitized["Down/Up Ratio"] == "BENIGN"].index, inplace=True)
     df_sanitized["Down/Up Ratio"] = df_sanitized["Down/Up Ratio"].astype(float)
-    df_sanitized["Down/Up Ratio"].value_counts(normalize=True)
 
     return df_sanitized

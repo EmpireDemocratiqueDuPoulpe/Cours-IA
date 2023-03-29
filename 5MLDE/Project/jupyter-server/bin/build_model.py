@@ -12,11 +12,11 @@ if __name__ == "__main__":
 
     # Train and predict
     pipeline = train_model(x_train=x_train, y_train=y_train)
-    predictions = get_predictions(pipeline=pipeline, x_test=x_test, y_test=y_test, logger=constants.LOGGER)
+    predictions = get_predictions(pipeline=pipeline, x_test=x_test, logger=constants.LOGGER)
 
     # Compute metrics
-    train_accuracy = compute_accuracy(x=x_train, y=y_train, logger=constants.LOGGER)
-    test_accuracy = compute_accuracy(x=x_test, y=y_test, logger=constants.LOGGER)
+    train_accuracy = compute_accuracy(pipeline=pipeline, x=x_train, y=y_train, logger=constants.LOGGER)
+    test_accuracy = compute_accuracy(pipeline=pipeline, x=x_test, y=y_test, logger=constants.LOGGER)
 
     constants.LOGGER.info(msg=f"Model accuracy (train): {(train_accuracy * 100):.6f}%")
     constants.LOGGER.info(msg=f"Model accuracy (test): {(test_accuracy * 100):.6f}%")
@@ -24,6 +24,6 @@ if __name__ == "__main__":
     # Save pipeline
     save_pipeline(
         pipeline=pipeline,
-        path=(constants.LOCAL_MODELS_FOLDER / f"pipeline_v{constants.MODEL_VERSION}.joblib"),
+        path=(constants.LOCAL_MODELS_FOLDER / f"pipeline__v{constants.MODEL_VERSION}.joblib"),
         logger=constants.LOGGER
     )

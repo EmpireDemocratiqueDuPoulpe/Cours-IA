@@ -44,12 +44,12 @@ LOG_LEVEL = logging.INFO
 LOGGER = get_logger(name="model_deployment_logger", level=LOG_LEVEL)
 
 # ### Filepaths ########################################################################################################
-PARENT_FOLDER = Path.cwd()
-CONFIG_FOLDER = (PARENT_FOLDER / ".." / "config").resolve()
-DATA_FOLDER = (PARENT_FOLDER / ".." / "data").resolve()
-MODELS_FOLDER = (PARENT_FOLDER / ".." / "models").resolve()
-LOCAL_MODELS_FOLDER = (PARENT_FOLDER / ".." / "web_service" / "local_models").resolve()
-TEMP_FOLDER = (PARENT_FOLDER / ".." / "temp").resolve()
+PARENT_FOLDER = Path("/app")
+CONFIG_FOLDER = (PARENT_FOLDER / "config")
+DATA_FOLDER = (PARENT_FOLDER / "data")
+MODELS_FOLDER = (PARENT_FOLDER / "models")
+LOCAL_MODELS_FOLDER = (PARENT_FOLDER / "web_service" / "local_models")
+TEMP_FOLDER = (PARENT_FOLDER / "temp")
 
 # ### Datasets #########################################################################################################
 DATASET_BASE_NAME = "Android_Malware"
