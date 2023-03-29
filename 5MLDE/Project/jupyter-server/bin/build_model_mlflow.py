@@ -5,7 +5,7 @@ import mlflow
 from config import constants
 from lib.data_loading import load_data
 from lib.data_preprocessing import prepare_data
-from lib.modelling import train_model, get_predictions, compute_accuracy
+from lib.modelling import train_model, get_predictions, compute_accuracy, save_pipeline
 
 
 if __name__ == "__main__":
@@ -32,6 +32,13 @@ if __name__ == "__main__":
 
         constants.LOGGER.info(msg=f"Model accuracy (train): {(train_accuracy * 100):.6f}%")
         constants.LOGGER.info(msg=f"Model accuracy (test): {(test_accuracy * 100):.6f}%")
+
+        # Save pipeline
+        save_pipeline(
+            pipeline=pipeline,
+            path=(constants.MLFLOW_MODELS_FOLDER / f"pipeline__v{constants.MODEL_VERSION}.joblib"),
+            logger=constants.LOGGER
+        )
 
         # Register the model to the MLFlow registry
         constants.LOGGER.info(msg=f"Registering the model to MLFLow with the name \"{constants.MLFLOW_MODEL_NAME}\"...")

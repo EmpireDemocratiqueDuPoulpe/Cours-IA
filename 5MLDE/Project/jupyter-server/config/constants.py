@@ -48,7 +48,7 @@ PARENT_FOLDER = Path("/app")
 CONFIG_FOLDER = (PARENT_FOLDER / "config")
 DATA_FOLDER = (PARENT_FOLDER / "data")
 MODELS_FOLDER = (PARENT_FOLDER / "models")
-LOCAL_MODELS_FOLDER = (PARENT_FOLDER / "web_service" / "local_models")
+MLFLOW_MODELS_FOLDER = Path("/mlflow")
 TEMP_FOLDER = (PARENT_FOLDER / "temp")
 
 # ### Datasets #########################################################################################################

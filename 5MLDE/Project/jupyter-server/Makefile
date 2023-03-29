@@ -8,8 +8,6 @@ init_model_mlflow:
 	@python -m pip install -r requirements.txt
 	@echo "Building local model..."
 	@python ./bin/build_model.py
-	@echo "Copying local model to shared volume..."
-	@cp /app/web_service/local_models/pipeline__v1.0.0.joblib /mlflow
 	@echo "Building model and pushing to Mlflow..."
 	@python ./bin/build_model_mlflow.py
 	@echo "We've done our job. It works (normally)."

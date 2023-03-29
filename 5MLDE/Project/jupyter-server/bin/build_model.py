@@ -24,6 +24,6 @@ if __name__ == "__main__":
     # Save pipeline
     save_pipeline(
         pipeline=pipeline,
-        path=(constants.LOCAL_MODELS_FOLDER / f"pipeline__v{constants.MODEL_VERSION}.joblib"),
+        path=(constants.MODELS_FOLDER / f"pipeline__v{constants.MODEL_VERSION}.joblib"),
         logger=constants.LOGGER
     )
