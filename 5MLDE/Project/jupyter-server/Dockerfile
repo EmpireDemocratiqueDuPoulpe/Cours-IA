@@ -13,7 +13,6 @@ COPY ./locust ./locust
 COPY ./models ./models
 COPY ./notebooks ./notebooks
 COPY ./temp ./temp
-COPY ./web_service ./web_service
 COPY ./.gitignore ./.gitignore
 COPY ./Makefile ./Makefile
 COPY ./requirements.txt ./requirements.txt
@@ -36,4 +35,4 @@ EXPOSE 8000
 EXPOSE 4200
 
 # Run Jupyter Lab on container starts up
-CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--NotebookApp.token='5MLRE'"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root", "--NotebookApp.token='5MLDE'"]

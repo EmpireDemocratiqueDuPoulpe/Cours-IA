@@ -1,8 +1,3 @@
-# #################################################################################################################### #
-#       ./web_service/internal_config.py                                                                               #
-#           Internal config of the webservice. Some constants may be replicated from ROOT/config/*                     #
-# #################################################################################################################### #
-
 # OS and filesystem
 from pathlib import Path
 
@@ -34,8 +29,8 @@ LOG_LEVEL = logging.INFO
 LOGGER = get_logger(name="web_service_logger", level=LOG_LEVEL)
 
 # ### Filepaths ########################################################################################################
-PARENT_FOLDER = Path.cwd()
-MODELS_FOLDER = (PARENT_FOLDER / "local_models").resolve()
+PARENT_FOLDER = Path("/web_service")
+MODELS_FOLDER = Path("/mlflow")
 
 # ### Model ############################################################################################################
 MODEL_VERSION = "1.0.0"

@@ -4,9 +4,9 @@ FROM python:3.9.16-slim
 WORKDIR /web_service
 
 # Create folder structure
+COPY ./lib ./lib
 COPY ./local_models ./local_models
 COPY ./.gitignore ./.gitignore
-COPY ./__init__.py ./__init__.py
 COPY ./internal_config.py ./internal_config.py
 COPY ./main.py ./main.py
 COPY ./requirements.txt ./requirements.txt

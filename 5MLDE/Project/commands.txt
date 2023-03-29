@@ -1,8 +1,9 @@
 25/03/2023 - Installation serveur jupyter / mlflow
-docker network create --driver bridge 5mlre-network
+docker network create --driver bridge 5mlde-network
 
-docker build --tag 5mlre_jupyter ./jupyter-server
-docker build --tag 5mlre_mlflow ./mlflow-server
+docker build --tag 5mlde_jupyter ./jupyter-server
+docker build --tag 5mlde_mlflow ./mlflow-server
+docker build --tag 5mlde_prediction-server ./prediction-server
 
 docker run --interactive \
            --tty \
@@ -13,27 +14,35 @@ docker run --interactive \
            --volume ${PWD}/mlflow-server/local:/mlflow \
            --env JUPYTER_ENABLE_LAB=yes \
            --env MLFLOW_TRACKING_URI=http://mlflow:5000 \
-           --network 5mlre-network \
+           --network 5mlde-network \
            --name jupyter \
            --detach \
-           5mlre_jupyter
+           5mlde_jupyter
 
-> ONE LINER : docker run --interactive --tty --user root --publish 10000:8888 --publish 8000:8000 --publish 4200:4200 --volume ${PWD}/mlflow-server/local:/mlflow --env JUPYTER_ENABLE_LAB=yes --env MLFLOW_TRACKING_URI=http://mlflow:5000 --network 5mlre-network --name jupyter --detach 5mlre_jupyter
+> ONE LINER : docker run --interactive --tty --user root --publish 10000:8888 --publish 8000:8000 --publish 4200:4200 --volume ${PWD}/mlflow-server/local:/mlflow --env JUPYTER_ENABLE_LAB=yes --env MLFLOW_TRACKING_URI=http://mlflow:5000 --network 5mlde-network --name jupyter --detach 5mlde_jupyter
 
 docker run --interactive \
            --tty \
            --user root \
            --publish 5000:5000 \
            --volume ${PWD}/mlflow-server/local:/mlflow \
-           --network 5mlre-network \
+           --network 5mlde-network \
            --name mlflow \
            --detach \
-           5mlre_mlflow
+           5mlde_mlflow
 
-> ONE LINER : docker run --interactive --tty --user root --publish 5000:5000 --volume ${PWD}/mlflow-server/local:/mlflow --network 5mlre-network --name mlflow --detach 5mlre_mlflow
+> ONE LINER : docker run --interactive --tty --user root --publish 5000:5000 --volume ${PWD}/mlflow-server/local:/mlflow --network 5mlde-network --name mlflow --detach 5mlde_mlflow
 
+make init_model_mlflow
 
+docker run --interactive \
+           --tty \
+           --user root \
+           --publish 8001:8001 \
+           --volume ${PWD}/mlflow-server/local:/mlflow \
+           --network 5mlde-network \
+           --name prediction-server \
+           --detach \
+           5mlde_prediction-server
 
-
-cd config/
-great_expectations init
+> ONE LINER : docker run --interactive --tty --user root --publish 8001:8001 --volume ${PWD}/mlflow-server/local:/mlflow --network 5mlde-network --name prediction-server --detach 5mlde_prediction-server

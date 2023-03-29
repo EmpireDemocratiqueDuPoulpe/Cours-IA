@@ -110,6 +110,6 @@ if __name__ == "__main__":
         "Idle Min": 0.0
     }
 
-    # url = "http://prediction_server:8001/predict"
-    url = "http://localhost:8000/predict"
+    url = "http://prediction-server:8001/predict"
+    # url = "http://localhost:8000/predict"
     response = post_payload(target_uri=url, payload=example_payload)
