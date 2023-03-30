@@ -2,7 +2,7 @@
 The jupyter server is the core of the environment. This allows us to develop our model and then send it to MLFlow and other services.
 
 ## Installation - step two
-__Unless otherwise specified, the current working directory should be the project root for all commands to be run on the host PC.__
+_Unless otherwise specified, the current working directory should be the project root for all commands to be run on the host PC._
 
 1. Transfert the [Android Malware dataset](https://www.kaggle.com/datasets/subhajournal/android-malware-detection) to the [./data](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/jupyter-server/data) folder. It was not included because the file is too large.
 2. From your host computer, run the following commands:

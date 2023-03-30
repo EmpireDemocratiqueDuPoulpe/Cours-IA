@@ -2,7 +2,7 @@
 MLFlow is an open source platform used to manage the Machine Learning lifecycle. It permits reproducibility by recording experiments, configuration, parameters used in a model training.
 
 ## Installation - step three
-__Unless otherwise specified, the current working directory should be the project root for all commands to be run on the host PC.__
+_Unless otherwise specified, the current working directory should be the project root for all commands to be run on the host PC._
 
 1. From your host computer, run the following commands:
    1. Build the Docker image: `docker build --tag 5mlde_mlflow ./mlflow-server`
