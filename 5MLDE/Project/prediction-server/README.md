@@ -12,7 +12,7 @@ _Unless otherwise specified, the current working directory should be the project
    1. Move to the project folder: `cd /app`
    2. Send a test request to the API: `python ./bin/post_payload.py`
 
-The API is has three pages:
+The API has three pages:
 - `http://localhost:8001` - The "home" page.
 - `http://localhost:8001/predict` - The prediction endpoint.
 - `http://localhost:8001/docs` - A more intuitive way to test the endpoints.
