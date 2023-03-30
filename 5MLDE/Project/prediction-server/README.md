@@ -18,4 +18,4 @@ The API is has three pages:
 - `http://localhost:8001/docs` - A more intuitive way to test the endpoints.
 
 ## Navigation
-If the following installation works, you can proceed to the next step: [installing Locust](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/locust-master).
+If this installation works, you can proceed to the next step: [installing Locust](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/locust-master).

@@ -12,4 +12,4 @@ _Unless otherwise specified, the current working directory should be the project
 You can now enter the number of users you want and the delay between each spawn. Set the host URI to `http://prediction-server:8001` and start the test.
 
 ## Navigation
-If the following installation works, you can proceed to the last step: [starting Prefect](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/prefect).
+If this installation works, you can proceed to the last step: [starting Prefect](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/prefect).

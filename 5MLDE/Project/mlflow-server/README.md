@@ -15,4 +15,4 @@ _Unless otherwise specified, the current working directory should be the project
 You can reload the MLFlow webpage and the fitted model should appear in the list on the left.
 
 ## Navigation
-If the following installation works, you can proceed to the next step: [installing the prediction server](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/prediction-server).
+If this installation works, you can proceed to the next step: [installing the prediction server](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/prediction-server).

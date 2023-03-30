@@ -16,4 +16,4 @@ You can now explore the projet structure and read the notebooks about the data e
 Other services might ask you to run a command in this Docker container. To do this, open a terminal from the Jupyter launcher.
 
 ## Navigation
-If the following installation works, you can proceed to the next step: [installing MLFlow](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/mlflow-server).
+If this installation works, you can proceed to the next step: [installing MLFlow](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/mlflow-server).
