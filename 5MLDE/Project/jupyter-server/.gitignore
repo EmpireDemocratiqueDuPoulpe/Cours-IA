@@ -1,3 +1,7 @@
 # Data
 data/*
 !data/.keep
+
+# Temporary
+temp/*
+!temp/.keep
