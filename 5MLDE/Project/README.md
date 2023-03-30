@@ -15,4 +15,4 @@ The next steps are explained individually in each service. Follow the instructio
 If this installation works, you can proceed to the next step: [installing Jupyter](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project/jupyter-server).
 
 ## Course navigation
-[<-- Previous exercise](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Day2-TP1)
+[<-- Previous exercise](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Day3-TP2)
