@@ -2,4 +2,4 @@
 09/03/2023
 
 ## Navigation
-[<-- Previous exercise](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Day1-TP1) | [Next exercise -->](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Project)
+[<-- Previous exercise](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Day1-TP1) | [Next exercise -->](https://github.com/EmpireDemocratiqueDuPoulpe/Cours-IA/tree/main/5MLDE/Day3-TP1)
