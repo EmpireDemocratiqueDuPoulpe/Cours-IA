@@ -5,15 +5,8 @@ Now that the model is built and ready, we will configure an API to serve it on t
 _Unless otherwise specified, the current working directory should be the project root for all commands to be run on the host PC._
 
 1. From your host computer, run the following commands:
-    
-    Build the Docker image:
-    ```
-    docker build --tag 5mlde_prediction-server ./prediction-server
-    ```
-    Run the container:
-    ```
-    docker run --interactive --tty --user root --publish 8001:8001 --volume ${PWD}/mlflow-server/local:/mlflow --network 5mlde-network --name prediction-server --detach 5mlde_prediction-server
-    ```
+    1. Build the Docker image: `docker build --tag 5mlde_prediction-server ./prediction-server`
+    2. Run the container: `docker run --interactive --tty --user root --publish 8001:8001 --volume ${PWD}/mlflow-server/local:/mlflow --network 5mlde-network --name prediction-server --detach 5mlde_prediction-server`
 2. Open the following URI in your favorite browser: `http://localhost:8001`
 3. To test it further, run the following commands from the Jupyter container:
    1. Move to the project folder: `cd /app`
