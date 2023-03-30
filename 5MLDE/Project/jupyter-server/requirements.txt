@@ -1,0 +1,31 @@
+# Data
+pandas
+matplotlib
+matplotx[all]
+PyYAML
+
+# Models
+scikit-learn
+
+# App and deployment
+jupyterlab
+prefect
+mlflow
+great_expectations
+fastapi
+pyngrok
+uvicorn
+locust
+
+# Linting
+pre-commit
+black==22.12.0  # be sure to change the version in .pre-commit-config.yaml to match
+black[jupyter]
+flake8==6.0.0  # be sure to change the version in .pre-commit-config.yaml to match
+isort==5.12.0  # be sure to change the version in .pre-commit-config.yaml to match
+
+# Misc.
+requests
+gdown
+colorama
+pydantic
